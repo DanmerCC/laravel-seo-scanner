@@ -63,7 +63,10 @@ class Seo
         $options = (array) config('seo.http.options', []);
 
         $response = $this->http::withOptions([
-            'decode_content' => false,
+            //TODO
+            'decode_content' => true,
+            'timeout' => 3600,
+            //TODO
             ...$options,
         ])
             ->withHeaders([
@@ -97,7 +100,8 @@ class Seo
             ])
             ->through($checks->keys()->toArray())
             ->then(function ($data) {
-                $this->successful = $data['checks']->filter(fn ($result) => $result['result'])
+                $this->successful = $data['checks']
+                    ->filter(fn ($result) => $result['result'])
                     ->map(function ($result, $check) {
                         return app($check)->merge($result);
                     });

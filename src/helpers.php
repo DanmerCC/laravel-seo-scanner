@@ -71,6 +71,10 @@ if (! function_exists('getRemoteFileSize')) {
             }
 
             if (! isset($contentLength)) {
+
+                //validate url type //js.hsforms.net/etc... no have protocol
+                $url = filter_var($url, FILTER_VALIDATE_URL) ? $url : 'https:'.$url;
+
                 $contentLength = strlen(file_get_contents($url));
             }
 
